@@ -70,4 +70,3 @@ return elemento.trim().toLowerCase()
 
 
 
-
