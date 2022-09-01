@@ -15,22 +15,55 @@ if(localStorage.getItem('comentariosGuardados2')==undefined)
 {comentariosArr=[]}
 else{
 comentariosArr=JSON.parse(localStorage.getItem('comentariosGuardados2'))
+
 mostrarComentariosGuardados()}
 capturarComentarios()
 
+function construirBotonera(){
+    newDivPosition=document.querySelector('.contenedor')
+    newDiv=document.createElement('div')
+    newDiv.setAttribute('id','buttonPanel')
+    newDiv.style.display='flex'
+    newDiv.style.justifyContent='spaceAround'
+    newDiv.style.alignContent='center'
+    newDivPosition.appendChild(newDiv)
+    botonMax()
+
+
+
+
+
+
+}
+
 function botonBorrar(){
-if(comentariosArr.length>0){
-    newButtonPosition=document.querySelector('.comentarios')
+
+    newButtonPosition=document.querySelector('#buttonPanel')
     newButton=document.createElement('button')
     newButton.setAttribute('id','borrar')
     newButton.innerText='Borrar Comentarios'
     newButtonPosition.appendChild(newButton)
     newButton.addEventListener('click',(e)=>{localStorage.clear();
-    location.reload()})}}
+    location.reload()})}
+
+function botonMax(){
+    newButtonPosition=document.querySelector('#buttonPanel')
+    newButton=document.createElement('button')
+    newButton.setAttribute('id','max')
+    newButton.innerText='Cargar Fotos x hacer'
+    newButtonPosition.appendChild(newButton)
+    newButton.addEventListener('click',(e)=>{
+    location.reload()})}
+
+
+
+
 
 
 function mostrarComentariosGuardados(){
-botonBorrar()
+construirBotonera()
+if (comentariosArr.length>0){
+botonBorrar()}
 for (i=0;i<comentariosArr.length;i++){
     displayCosas(comentariosArr[i])
    }   
@@ -50,13 +83,13 @@ captura=document.querySelector('#comentario').value
 if (captura.length>5){
     comentariosArr.push(limpiarTexto(captura))
     localStorage.setItem('comentariosGuardados2',JSON.stringify(comentariosArr))
-    if(comentariosArr.length==1){botonBorrar()}
+    if(comentariosArr.length==1){construirBotonera(); botonBorrar()}
     displayCosas(comentariosArr.slice(-1))}})}
 
 function limpiarTexto(elemento){
 
-
-return elemento.trim().toLowerCase()
+const date1 = new Date();
+return date1.toLocaleString()+" : "+elemento.trim().toUpperCase().substring(0,1)+elemento.trim().substring(1).toLowerCase()
 }
 
 
