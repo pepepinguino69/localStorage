@@ -51,12 +51,12 @@ if (captura.length>5){
     comentariosArr.push(limpiarTexto(captura))
     localStorage.setItem('comentariosGuardados2',JSON.stringify(comentariosArr))
     if(comentariosArr.length==1){botonBorrar()}
-    displayCosas(captura)}})}
+    displayCosas(comentariosArr.slice(-1))}})}
 
 function limpiarTexto(elemento){
 
 
-return elemento.toLowerCase().trim()
+return elemento.trim().toLowerCase()
 }
 
 
