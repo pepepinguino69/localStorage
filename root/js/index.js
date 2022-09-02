@@ -89,6 +89,7 @@ function limpiarTexto(elemento){
 
 const date1 = new Date();
 
+alert( normalDate(date1)+" : "+elemento.trim().toUpperCase().substring(0,1)+elemento.trim().substring(1).toLowerCase())
 return normalDate(date1)+" : "+elemento.trim().toUpperCase().substring(0,1)+elemento.trim().substring(1).toLowerCase()
 }
 
@@ -100,9 +101,9 @@ function normalDate(date){
     yr=date.getFullYear();
     mm=twoDigits(date.getMonth()+1);
     dd=twoDigits(date.getDate());
-    hr=date.getHours();
-    min =date.getMinutes();
-    return dd+'/'+mm+'/'+yr+' - '+hr+':'+min
+    hr=twoDigits(date.getHours());
+    mts =twoDigits(date.getMinutes());
+    return dd+'/'+mm+'/'+yr+' - '+hr+':'+mts
 }
 
 
