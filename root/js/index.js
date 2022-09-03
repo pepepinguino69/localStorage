@@ -27,7 +27,8 @@ function construirBotonera(){
         newButton.innerText=buttonPanel[index].label
         newButtonPosition.appendChild(newButton)})
     document.querySelector('#borrar').addEventListener('click',(e)=>{localStorage.clear();location.reload()})
-    document.querySelector('#selectFiles').addEventListener('click',(e)=>selectFile())     
+    document.querySelector('#selectFiles').addEventListener('click',(e)=>selectFile())   
+    document.querySelector('#comentar').addEventListener('click', (e)=>{capturarComentarios(e)})
 }
 
 function selectFile(accept = null) {
@@ -81,7 +82,8 @@ function tachado(event){
     if(tipoClick!=""){
         document.querySelector('#'+idClicked).classList.toggle('colorFondo')}
     else
-        {document.querySelector('#cr'+arrPos).classList.toggle('estadoCruzado')}}
+        {document.querySelector('#cr'+arrPos).classList.toggle('estadoCruzado')}
+}
     
 function displayCosas(elemento){
     pCount = document.querySelectorAll('p').length
@@ -100,24 +102,24 @@ function displayCosas(elemento){
         nuevoP.innerHTML+=`<img id="${idCross}" class="cross-img estadoCruzado" src="http://www.clker.com/cliparts/0/7/e/a/12074327311562940906milker_X_icon.svg.med.png" />`}
                                    
         const divComentarios=document.querySelector('.comentarios')
-        const porque=divComentarios.appendChild(nuevoP)}
+        const porque=divComentarios.appendChild(nuevoP)
+}
     
-function capturarComentarios(){
-    form=document.querySelector('#comentar')
-    form.addEventListener('click', (e)=>{
+function capturarComentarios(event){
+    
     captura=document.querySelector('#comentario').value
     document.querySelector('#comentario').value=''
     if(captura.length>0){
         prueba={'comentario':limpiarTexto(captura)}
     comentariosArr.push(prueba)
     localStorage.setItem('comentariosGuardados2',JSON.stringify(comentariosArr))
-    displayCosas(comentariosArr[comentariosArr.length-1])}})
-}
+    displayCosas(comentariosArr[comentariosArr.length-1])}}
 
 function limpiarTexto(elemento){
 const date1 = new Date();
 return normalDate(date1)+" : "+elemento.trim().toUpperCase().substring(0,1)+elemento.trim().substring(1).toLowerCase()
 }
+
 function twoDigits(valueDigit){
     return valueDigit<10?'0'+valueDigit:''+valueDigit
 }
