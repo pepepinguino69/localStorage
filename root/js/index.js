@@ -27,9 +27,9 @@ function construirBotonera(){
     newDivPosition.appendChild(newDiv)
     newButtonPosition=document.querySelector('#buttonPanel')
     const  buttonPanel=[
-    {'id':'borrar','label':'Borrar Comentarios'},
-    {'id':'comentar','label':'Agregar Comentarios'},
-    {'id':'selectFiles','label':'Subir Foto'}]
+    {'id':'borrar','label':'Borrar Tareas'},
+    {'id':'comentar','label':'Agregar Tareas'},
+    {'id':'selectFiles','label':'Fotos c/ Tareas'}]
     buttonPanel.forEach((e,index)=>{
         newButton=document.createElement('button')
         newButton.setAttribute('id',buttonPanel[index].id)
