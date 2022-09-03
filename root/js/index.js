@@ -10,10 +10,15 @@ REQUERIMIENTOS
 */
 
 
+
+
+
+fileSelection=''
 if(localStorage.getItem('comentariosGuardados2')==undefined)
 {comentariosArr=[]}
 else{
 comentariosArr=JSON.parse(localStorage.getItem('comentariosGuardados2'))
+
 
 mostrarComentariosGuardados()}
 capturarComentarios()
@@ -26,14 +31,9 @@ function construirBotonera(){
     newDiv.style.justifyContent='spaceAround'
     newDiv.style.alignContent='center'
     newDivPosition.appendChild(newDiv)
-    botonMax()
+    botonMax()}
 
 
-
-
-
-
-}
 
 function botonBorrar(){
 
@@ -45,55 +45,90 @@ function botonBorrar(){
     newButton.addEventListener('click',(e)=>{localStorage.clear();
     location.reload()})}
 
+    function selectFile(accept = null) {
+        return new Promise(async resolve => {
+            const fileInputElement = document.createElement('input');
+            fileInputElement.type = 'file';
+            fileInputElement.style.opacity = '0';
+            if (accept) fileInputElement.accept = accept;
+            fileInputElement.addEventListener('change', () => {
+                const file = fileInputElement.files[0];
+                fileSelection= file.name;     
+                document.body.removeChild(fileInputElement);
+                fotoSelection(fileSelection)
+                resolve(file);
+                
+            });
+            document.body.appendChild(fileInputElement);
+            setTimeout(_ => {
+                fileInputElement.click();
+                const onFocus = () => {
+                    window.removeEventListener('focus', onFocus);
+                    document.body.addEventListener('mousemove', onMouseMove);
+                };
+                const onMouseMove = () => {
+                    document.body.removeEventListener('mousemove', onMouseMove);
+                    if (!fileInputElement.files.length) {
+                        document.body.removeChild(fileInputElement);
+                        fileSelection='';
+                        resolve(null);
+                    }
+                }
+                window.addEventListener('focus', onFocus);
+            }, 0);
+        });
+    }
+
+function fotoSelection(fileName){
+        prueba={'foto':fileName}
+        comentariosArr.push(prueba);
+        localStorage.setItem('comentariosGuardados2',JSON.stringify(comentariosArr))
+        displayCosas(comentariosArr[comentariosArr.length-1])}
+
 function botonMax(){
     newButtonPosition=document.querySelector('#buttonPanel')
     newButton=document.createElement('button')
     newButton.setAttribute('id','max')
-    newButton.innerText='Cargar Fotos x hacer'
+    newButton.innerText='Cargar Fotos'
     newButtonPosition.appendChild(newButton)
-    newButton.addEventListener('click',(e)=>{
-    location.reload()})}
-
-
-
-
-
-
+    newButton.addEventListener('click',(e)=>selectFile())}
+                                                       
 function mostrarComentariosGuardados(){
 construirBotonera()
 if (comentariosArr.length>0){
 botonBorrar()}
-for (i=0;i<comentariosArr.length;i++){
-    displayCosas(comentariosArr[i])
+comentariosArr.forEach(e=>{
+    displayCosas(e)})
    }   
-}
+
 function displayCosas(elemento){
+
     nuevoP=document.createElement('p')
-    nuevoP.textContent=elemento
+    if (Object.keys(elemento)=='comentario'){
+    nuevoP.textContent=elemento['comentario']}
+    else{
+        imageString='images/'+elemento['foto']
+    nuevoP.innerHTML=`"<img src="${imageString}">"`}
     const divComentarios=document.querySelector('.comentarios')
     const porque=divComentarios.appendChild(nuevoP)
 }
-
 function capturarComentarios(){
 form=document.querySelector('form')
 form.addEventListener('submit', (e)=>{
 e.preventDefault()
 captura=document.querySelector('#comentario').value
-if (captura.length>5){
-    comentariosArr.push(limpiarTexto(captura))
+if(captura.length>0){
+    prueba={'comentario':limpiarTexto(captura)}
+    comentariosArr.push(prueba)
     localStorage.setItem('comentariosGuardados2',JSON.stringify(comentariosArr))
     if(comentariosArr.length==1){construirBotonera(); botonBorrar()}
-    displayCosas(comentariosArr.slice(-1))}})}
-
-function limpiarTexto(elemento){
-
-const date1 = new Date();
-
-alert( normalDate(date1)+" : "+elemento.trim().toUpperCase().substring(0,1)+elemento.trim().substring(1).toLowerCase())
-return normalDate(date1)+" : "+elemento.trim().toUpperCase().substring(0,1)+elemento.trim().substring(1).toLowerCase()
+    displayCosas(comentariosArr[comentariosArr.length-1])}})
 }
 
-
+function limpiarTexto(elemento){
+const date1 = new Date();
+return normalDate(date1)+" : "+elemento.trim().toUpperCase().substring(0,1)+elemento.trim().substring(1).toLowerCase()
+}
 function twoDigits(valueDigit){
     return valueDigit<10?'0'+valueDigit:''+valueDigit
 }
